@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q59 等势线与正电荷运动｜课堂版</title>
+<style>
+:root{
+  --bg:#f6f8fc;--card:#fff;--border:#d9e3f0;--text:#152238;--muted:#667085;
+  --equip:#16a3d6;--track:#111827;--vel:#3456eb;--efield:#159447;--force:#e5484d;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+h1{margin:0 0 6px;font-size:24px}
+h2{margin:0 0 12px;font-size:18px}
+.sub,.note{font-size:14px;color:var(--muted);line-height:1.75}
+svg{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}
+button.primary{background:#172033;color:#fff;border-color:#172033}
+button.active{border-color:#4f46e5;background:#eef2ff;color:#2739d7}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0}
+.info{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef1f5;font-size:14px}
+.info:last-child{border-bottom:none}
+.state{padding:12px 14px;border:1px solid var(--border);background:#f8fbff;border-radius:12px;font-size:14px;line-height:1.75}
+.range{margin-top:12px} input[type=range]{width:100%}
+.pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#334155;font-size:12px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="pill">Q59 · 反推型课堂版</div>
+      <h1>等势线间距 → 电场强弱 → 正电荷受力与能量变化</h1>
+      <div class="sub">粒子为正电荷，沿题目给定黑色轨迹由 P 经过 Q。原题没有直接给出电场方向，因此局部 E 作为“推断层”默认隐藏；开启后只在 P、Q 等关键位置显示，与等势线局部垂直。</div>
+
+      <svg id="svg" viewBox="0 0 800 500" aria-label="Q59 等势线与正电荷运动">
+        <defs>
+          <marker id="vArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#3456eb"/></marker>
+          <marker id="eArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#159447"/></marker>
+          <marker id="fArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#e5484d"/></marker>
+          <filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feMorphology operator="dilate" radius="3" in="SourceAlpha" result="thicken"/><feFlood flood-color="white" result="white"/><feComposite in="white" in2="thicken" operator="in" result="outline"/><feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path id="eqA" d="M170 345 C265 315 330 240 355 95" fill="none" stroke="#16a3d6" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round"/>
+        <path id="eqB" d="M265 390 C380 360 470 275 500 98" fill="none" stroke="#16a3d6" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round"/>
+        <path id="eqC" d="M365 420 C505 390 620 295 690 105" fill="none" stroke="#16a3d6" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round"/>
+        <text x="330" y="78" font-size="34" font-style="italic" font-weight="700" fill="#111827">a</text>
+        <text x="476" y="82" font-size="34" font-style="italic" font-weight="700" fill="#111827">b</text>
+        <text x="665" y="86" font-size="34" font-style="italic" font-weight="700" fill="#111827">c</text>
+        <path id="track" d="M158 350 C290 330 470 286 665 170" fill="none" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+        <circle id="pDot" r="5.5" fill="#111827"></circle><text id="pLabel" font-size="30" font-weight="700" fill="#111827" filter="url(#halo)">P</text>
+        <circle id="qDot" r="5.5" fill="#111827"></circle><text id="qLabel" font-size="30" font-weight="700" fill="#111827" filter="url(#halo)">Q</text>
+        <g id="spacingGroup"><line id="gap1" x1="0" y1="0" x2="0" y2="0" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6"/><line id="gap2" x1="0" y1="0" x2="0" y2="0" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6"/></g>
+        <g id="particleGroup"><circle r="13" fill="#f59e0b" stroke="#fff" stroke-width="3.5"></circle><text x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">+</text></g>
+        <g id="vArrowGroup"><line x1="0" y1="0" x2="135" y2="0" stroke="#3456eb" stroke-width="4" marker-end="url(#vArrow)" stroke-linecap="round"/></g><text id="vText" font-size="48" font-weight="400" fill="#3456eb" filter="url(#halo)">v</text>
+        <g id="eFieldGroup" opacity="0.9"><g id="eLocalP"><line x1="0" y1="0" x2="78" y2="0" stroke="#159447" stroke-width="3.4" marker-end="url(#eArrow)" stroke-linecap="round"/></g><g id="eLocalM"><line x1="0" y1="0" x2="78" y2="0" stroke="#159447" stroke-width="3.4" marker-end="url(#eArrow)" stroke-linecap="round"/></g><g id="eLocalQ"><line x1="0" y1="0" x2="78" y2="0" stroke="#159447" stroke-width="3.4" marker-end="url(#eArrow)" stroke-linecap="round"/></g></g><text id="eText" x="0" y="0" font-size="36" font-weight="400" fill="#159447" filter="url(#halo)">E</text>
+        <g id="fArrowGroup"><line x1="0" y1="0" x2="118" y2="0" stroke="#e5484d" stroke-width="4" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fText" font-size="40" font-weight="400" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+        <g id="fpArrowGroup"><line x1="0" y1="0" x2="88" y2="0" stroke="#f59e0b" stroke-width="3.4" stroke-dasharray="8 6" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fpText" font-size="30" font-weight="700" fill="#f59e0b" filter="url(#halo)">F∥</text>
+        <g id="fnArrowGroup"><line x1="0" y1="0" x2="82" y2="0" stroke="#16a34a" stroke-width="3.4" stroke-dasharray="8 6" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fnText" font-size="30" font-weight="700" fill="#16a34a" filter="url(#halo)">F⊥</text>
+        <text x="22" y="472" font-size="17" fill="#64748b">蓝虚线：等势线　黑实线：题目给定轨迹　绿色短箭头：推断的局部 E　红色：Fₑ</text>
+      </svg>
+      <div class="controls"><button class="primary" id="play">▶ 播放</button><button id="pause">Ⅱ 暂停</button><button id="reset">↺ 重置</button><button class="speed" data-speed="0.5">0.5×</button><button class="speed active" data-speed="1">1×</button><button class="speed" data-speed="2">2×</button></div>
+      <div class="range"><div class="sub" style="margin-bottom:4px">轨迹进度</div><input id="progress" type="range" min="0" max="1000" value="0"></div>
+    </section>
+    <aside>
+      <div class="card" style="margin-bottom:18px"><h2>原题已知</h2><div class="info"><span>粒子</span><strong>正电荷</strong></div><div class="info"><span>相邻等势线</span><strong>Δφ 相等</strong></div><div class="info"><span>轨迹</span><strong>P → Q</strong></div><div class="info"><span>受力</span><strong>仅静电力</strong></div></div>
+      <div class="card" style="margin-bottom:18px"><h2>图层控制</h2><label class="chk"><input type="checkbox" id="showV" checked> 显示速度 v</label><label class="chk"><input type="checkbox" id="showE"> 显示推断的局部 E 方向</label><label class="chk"><input type="checkbox" id="showF" checked> 显示电场力 Fₑ</label><label class="chk"><input type="checkbox" id="showSpacing"> 显示等势线间距辅助</label><label class="chk"><input type="checkbox" id="showDecomp"> 显示力分解 F∥ / F⊥</label></div>
+      <div class="card" style="margin-bottom:18px"><h2>当前观察</h2><div id="state" class="state">正电荷：Fₑ 与 E 同向。比较 P、Q 附近等势线间距，可判断两点场强大小。</div></div>
+      <div class="card"><h2>课堂推理</h2><div class="note">① 相邻等势线 Δφ 相等，局部越密，E 越大。<br>② 原题未直接给出 E 方向；先由正电荷的轨迹弯曲趋势判断受力方向，再结合 E ⟂ 等势线推断局部 E。<br>③ 正电荷满足 Fₑ 与 E 同向。<br>④ 原题轨迹固定，只用来观察运动趋势。<br>⑤ 需要时再打开力分解：F∥ 改变速率，F⊥ 改变方向。</div></div>
+    </aside>
+  </div>
+</div>
+<script>
+(() => {
+  const $=id=>document.getElementById(id); const track=$('track'),eqA=$('eqA'),eqB=$('eqB'),eqC=$('eqC'),particleGroup=$('particleGroup'),vArrowGroup=$('vArrowGroup'),vText=$('vText'),eFieldGroup=$('eFieldGroup'),eText=$('eText'),eLocalP=$('eLocalP'),eLocalM=$('eLocalM'),eLocalQ=$('eLocalQ'),fArrowGroup=$('fArrowGroup'),fText=$('fText'),fpArrowGroup=$('fpArrowGroup'),fpText=$('fpText'),fnArrowGroup=$('fnArrowGroup'),fnText=$('fnText'),pDot=$('pDot'),qDot=$('qDot'),pLabel=$('pLabel'),qLabel=$('qLabel'),progress=$('progress'),play=$('play'),pause=$('pause'),reset=$('reset'),speeds=[...document.querySelectorAll('.speed')],showV=$('showV'),showE=$('showE'),showF=$('showF'),showSpacing=$('showSpacing'),showDecomp=$('showDecomp'),gap1=$('gap1'),gap2=$('gap2');
+  const total=track.getTotalLength(),startLen=total*.06,endLen=total*.94,travelLen=endLen-startLen; let value=0,speed=1,running=false,raf=null,last=0;
+  function pointAt(t){return track.getPointAtLength(startLen+travelLen*t)} function pathPt(path,t){return path.getPointAtLength(path.getTotalLength()*t)} function tangentTrack(t){const e=.003,a=pointAt(Math.max(0,t-e)),b=pointAt(Math.min(1,t+e)),dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;return{x:dx/m,y:dy/m}} function tangentPath(path,t){const e=.003,a=pathPt(path,Math.max(0,t-e)),b=pathPt(path,Math.min(1,t+e)),dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;return{x:dx/m,y:dy/m}} function ang(v){return Math.atan2(v.y,v.x)*180/Math.PI} function placeText(el,x,y,text){el.setAttribute('x',x);el.setAttribute('y',y);el.textContent=text}
+  function nearestOn(path,p){let best={d2:Infinity,t:0,q:null};for(let s=0;s<=1.0001;s+=.01){const q=pathPt(path,s),dx=p.x-q.x,dy=p.y-q.y,d2=dx*dx+dy*dy;if(d2<best.d2)best={d2,t:s,q}}return best}
+  function fieldAt(p){const cands=[eqA,eqB,eqC].map(path=>({path,...nearestOn(path,p)})).sort((a,b)=>a.d2-b.d2),best=cands[0],t=tangentPath(best.path,best.t),n1={x:-t.y,y:t.x},n2={x:t.y,y:-t.x},dir=(n1.x<n2.x)?n1:n2,m=Math.hypot(dir.x,dir.y)||1;return{x:dir.x/m,y:dir.y/m}}
+  function placeLocalE(group,t){const p=pointAt(t),E=fieldAt(p),base={x:p.x-E.x*54-E.y*18,y:p.y-E.y*54+E.x*18};group.setAttribute('transform',`translate(${base.x} ${base.y}) rotate(${ang(E)})`);return{p,E,base}}
+  function placePQ(){const p=pointAt(0),q=pointAt(1);pDot.setAttribute('cx',p.x);pDot.setAttribute('cy',p.y);qDot.setAttribute('cx',q.x);qDot.setAttribute('cy',q.y);pLabel.setAttribute('x',p.x-34);pLabel.setAttribute('y',p.y-10);qLabel.setAttribute('x',q.x+10);qLabel.setAttribute('y',q.y+6)}
+  function spacingAt(t){const p=pointAt(t),nearest=[eqA,eqB,eqC].map(path=>nearestOn(path,p).q);nearest.sort((a,b)=>a.x-b.x);return nearest}
+  function updateSpacing(){const pNear=spacingAt(.08),qNear=spacingAt(.90);if(pNear.length>=2){gap1.setAttribute('x1',pNear[0].x);gap1.setAttribute('y1',pNear[0].y);gap1.setAttribute('x2',pNear[1].x);gap1.setAttribute('y2',pNear[1].y)}if(qNear.length>=2){gap2.setAttribute('x1',qNear[1].x);gap2.setAttribute('y1',qNear[1].y);gap2.setAttribute('x2',qNear[2].x);gap2.setAttribute('y2',qNear[2].y)}}
+  function render(){const t=value/1000,p=pointAt(t),v=tangentTrack(t),E=fieldAt(p),F=E;particleGroup.setAttribute('transform',`translate(${p.x} ${p.y})`);vArrowGroup.setAttribute('transform',`translate(${p.x+6} ${p.y-8}) rotate(${ang(v)})`);placeText(vText,p.x+v.x*150-v.y*28+10,p.y+v.y*150+v.x*28+14,'v');fArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(F)})`);placeText(fText,p.x+F.x*132+F.y*20-12,p.y+F.y*132-F.x*20+12,'Fₑ');const dot=F.x*v.x+F.y*v.y,Fpar={x:v.x*dot,y:v.y*dot},Fperp={x:F.x-Fpar.x,y:F.y-Fpar.y};if(Math.hypot(Fpar.x,Fpar.y)>.08){fpArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(Fpar)})`);placeText(fpText,p.x+Fpar.x*98-v.y*18-8,p.y+Fpar.y*98+v.x*18-10,'F∥')}if(Math.hypot(Fperp.x,Fperp.y)>.08){fnArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(Fperp)})`);const n={x:-v.y,y:v.x},sgn=(Fperp.x*n.x+Fperp.y*n.y)>=0?1:-1;placeText(fnText,p.x+Fperp.x*92+n.x*sgn*18-10,p.y+Fperp.y*92+n.y*sgn*18+4,'F⊥')}vArrowGroup.style.display=showV.checked?'block':'none';vText.style.display=showV.checked?'block':'none';eFieldGroup.style.display=showE.checked?'block':'none';eText.style.display=showE.checked?'block':'none';fArrowGroup.style.display=showF.checked?'block':'none';fText.style.display=showF.checked?'block':'none';const sd=showF.checked&&showDecomp.checked;fpArrowGroup.style.display=sd?'block':'none';fpText.style.display=sd?'block':'none';fnArrowGroup.style.display=sd?'block':'none';fnText.style.display=sd?'block':'none';$('spacingGroup').style.display=showSpacing.checked?'block':'none';progress.value=String(value)}
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=null;last=0} function tick(ts){if(!running)return;if(!last)last=ts;const dt=ts-last;last=ts;value+=dt*.12*speed;if(value>=1000){value=1000;render();stop();return}render();raf=requestAnimationFrame(tick)}
+  play.addEventListener('click',()=>{if(value>=1000)value=0;if(!running){running=true;last=0;raf=requestAnimationFrame(tick)}});pause.addEventListener('click',stop);reset.addEventListener('click',()=>{stop();value=0;render()});progress.addEventListener('input',()=>{stop();value=Number(progress.value);render()});speeds.forEach(btn=>btn.addEventListener('click',()=>{speed=Number(btn.dataset.speed)||1;speeds.forEach(b=>b.classList.toggle('active',b===btn))}));[showV,showE,showF,showSpacing,showDecomp].forEach(el=>el.addEventListener('change',render));placePQ();updateSpacing();const ep=placeLocalE(eLocalP,.08),em=placeLocalE(eLocalM,.50),eq=placeLocalE(eLocalQ,.90);placeText(eText,ep.base.x+ep.E.x*90-ep.E.y*10,ep.base.y+ep.E.y*90+ep.E.x*10,'E');render();
+})();
+</script>
+</body>
+</html>
