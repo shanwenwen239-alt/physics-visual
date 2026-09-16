@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q64 静电矿料分选器｜课堂版</title>
+<style>
+:root{
+  --bg:#f6f8fc;--card:#fff;--border:#d9e3f0;--text:#152238;--muted:#667085;
+  --pos:#f59e0b;--neg:#6366f1;--field:#159447;--force:#e5484d;--vel:#3456eb;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+h1{margin:0 0 6px;font-size:24px}
+h2{margin:0 0 12px;font-size:18px}
+.sub,.note{font-size:14px;color:var(--muted);line-height:1.75}
+svg{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}
+button.primary{background:#172033;color:#fff;border-color:#172033}
+button.active{border-color:#4f46e5;background:#eef2ff;color:#2739d7}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0}
+.info{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef1f5;font-size:14px}
+.info:last-child{border-bottom:none}
+.state{padding:12px 14px;border:1px solid var(--border);background:#f8fbff;border-radius:12px;font-size:14px;line-height:1.75}
+.range{margin-top:12px} input[type=range]{width:100%}
+.pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#334155;font-size:12px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--muted)}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="pill">Q64 · 静电矿料分选器</div>
+      <h1>水平匀强电场中的正、负矿粉分离</h1>
+      <div class="sub">
+        右板带正电、左板带负电，因此电场方向固定由右向左。
+        两种带电矿粉从漏斗附近进入后，在下落过程中分别向两侧偏转。
+      </div>
+
+      <svg id="svg" viewBox="0 0 800 560" aria-label="Q64 静电矿料分选器">
+        <defs>
+          <marker id="eArrow" markerWidth="4.6" markerHeight="4.6" refX="4.25" refY="2.3" orient="auto">
+            <path d="M0,0 L4.6,2.3 L0,4.6 Z" fill="#159447"/>
+          </marker>
+          <marker id="fArrow" markerWidth="4.6" markerHeight="4.6" refX="4.25" refY="2.3" orient="auto">
+            <path d="M0,0 L4.6,2.3 L0,4.6 Z" fill="#e5484d"/>
+          </marker>
+          <marker id="vArrow" markerWidth="4.6" markerHeight="4.6" refX="4.25" refY="2.3" orient="auto">
+            <path d="M0,0 L4.6,2.3 L0,4.6 Z" fill="#3456eb"/>
+          </marker>
+          <filter id="halo" x="-50%" y="-50%" width="200%" height="200%">
+            <feMorphology operator="dilate" radius="3" in="SourceAlpha" result="thicken"/>
+            <feFlood flood-color="white" result="white"/>
+            <feComposite in="white" in2="thicken" operator="in" result="outline"/>
+            <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <path d="M345 55 L455 55 L430 120 L370 120 Z" fill="#111827"/>
+        <rect x="392" y="120" width="16" height="32" rx="4" fill="#111827"/>
+        <text x="475" y="86" font-size="28" fill="#111827">漏斗</text>
+        <rect x="145" y="175" width="28" height="245" rx="3" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+        <rect x="627" y="175" width="28" height="245" rx="3" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+        <text x="154" y="208" text-anchor="middle" font-size="28" font-weight="700">−</text>
+        <text x="154" y="258" text-anchor="middle" font-size="28" font-weight="700">−</text>
+        <text x="154" y="308" text-anchor="middle" font-size="28" font-weight="700">−</text>
+        <text x="154" y="358" text-anchor="middle" font-size="28" font-weight="700">−</text>
+        <text x="641" y="208" text-anchor="middle" font-size="28" font-weight="700">+</text>
+        <text x="641" y="258" text-anchor="middle" font-size="28" font-weight="700">+</text>
+        <text x="641" y="308" text-anchor="middle" font-size="28" font-weight="700">+</text>
+        <text x="641" y="358" text-anchor="middle" font-size="28" font-weight="700">+</text>
+        <g id="fieldGroup" opacity="0.78">
+          <line x1="590" y1="205" x2="205" y2="205" stroke="#159447" stroke-width="3.2" marker-end="url(#eArrow)"/>
+          <line x1="590" y1="255" x2="205" y2="255" stroke="#159447" stroke-width="3.2" marker-end="url(#eArrow)"/>
+          <line x1="590" y1="305" x2="205" y2="305" stroke="#159447" stroke-width="3.2" marker-end="url(#eArrow)"/>
+          <line x1="590" y1="355" x2="205" y2="355" stroke="#159447" stroke-width="3.2" marker-end="url(#eArrow)"/>
+        </g>
+        <text id="eText" x="525" y="188" font-size="40" font-weight="400" fill="#159447" filter="url(#halo)">E</text>
+        <path id="posTrack" d="M398 155 C390 230 350 325 250 455" fill="none" stroke="#f59e0b" stroke-width="4" stroke-dasharray="10 8"/>
+        <path id="negTrack" d="M402 155 C410 230 450 325 550 455" fill="none" stroke="#6366f1" stroke-width="4" stroke-dasharray="10 8"/>
+        <g id="posParticle"><circle r="14" fill="#f59e0b" stroke="#fff" stroke-width="3.5"></circle><text x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">+</text></g>
+        <g id="negParticle"><circle r="14" fill="#6366f1" stroke="#fff" stroke-width="3.5"></circle><text x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">−</text></g>
+        <g id="posV"><line x1="0" y1="0" x2="95" y2="0" stroke="#3456eb" stroke-width="4" marker-end="url(#vArrow)" stroke-linecap="round"/></g>
+        <g id="negV"><line x1="0" y1="0" x2="95" y2="0" stroke="#3456eb" stroke-width="4" marker-end="url(#vArrow)" stroke-linecap="round"/></g>
+        <text id="posVText" font-size="38" font-weight="400" fill="#3456eb" filter="url(#halo)">v</text>
+        <text id="negVText" font-size="38" font-weight="400" fill="#3456eb" filter="url(#halo)">v</text>
+        <g id="posF"><line x1="0" y1="0" x2="105" y2="0" stroke="#e5484d" stroke-width="4" marker-end="url(#fArrow)" stroke-linecap="round"/></g>
+        <g id="negF"><line x1="0" y1="0" x2="105" y2="0" stroke="#e5484d" stroke-width="4" marker-end="url(#fArrow)" stroke-linecap="round"/></g>
+        <text id="posFText" font-size="38" font-weight="400" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+        <text id="negFText" font-size="38" font-weight="400" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+        <line x1="130" y1="475" x2="670" y2="475" stroke="#111827" stroke-width="5"/>
+        <text x="575" y="520" font-size="28" fill="#111827">收集板</text>
+        <line x1="400" y1="455" x2="400" y2="492" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="7 6"/>
+        <text x="205" y="455" font-size="24" font-weight="700" fill="#f59e0b">左侧：正电矿粉</text>
+        <text x="455" y="455" font-size="24" font-weight="700" fill="#6366f1">右侧：负电矿粉</text>
+      </svg>
+      <div class="controls"><button class="primary" id="play">▶ 播放</button><button id="pause">Ⅱ 暂停</button><button id="reset">↺ 重置</button><button class="speed" data-speed="0.5">0.5×</button><button class="speed active" data-speed="1">1×</button><button class="speed" data-speed="2">2×</button></div>
+      <div class="range"><div class="sub" style="margin-bottom:4px">分选进度</div><input id="progress" type="range" min="0" max="1000" value="0"></div>
+    </section>
+    <aside>
+      <div class="card" style="margin-bottom:18px"><h2>原题已知</h2><div class="info"><span>左极板</span><strong>负</strong></div><div class="info"><span>右极板</span><strong>正</strong></div><div class="info"><span>电场</span><strong>水平匀强</strong></div><div class="info"><span>矿粉</span><strong>带正 / 负电</strong></div></div>
+      <div class="card" style="margin-bottom:18px"><h2>图层控制</h2><label class="chk"><input type="checkbox" id="showE" checked> 显示电场线</label><label class="chk"><input type="checkbox" id="showV" checked> 显示速度 v</label><label class="chk"><input type="checkbox" id="showF" checked> 显示电场力 Fₑ</label></div>
+      <div class="card" style="margin-bottom:18px"><h2>课堂观察</h2><div class="state">电场方向：<strong>右 → 左</strong><br>正电荷：Fₑ 向左，落在左侧。<br>负电荷：Fₑ 向右，落在右侧。</div></div>
+      <div class="card"><h2>能量关系</h2><div class="note">对两类矿粉，电场力方向都与各自的水平位移方向一致，因此电场力对它们都做<strong>正功</strong>。<br><br>所以两类矿粉的电势能都<strong>减小</strong>。</div></div>
+    </aside>
+  </div>
+</div>
+<script>
+(() => {
+  const $=id=>document.getElementById(id);
+  const posTrack=$('posTrack'),negTrack=$('negTrack');
+  const posParticle=$('posParticle'),negParticle=$('negParticle');
+  const posV=$('posV'),negV=$('negV'),posVText=$('posVText'),negVText=$('negVText');
+  const posF=$('posF'),negF=$('negF'),posFText=$('posFText'),negFText=$('negFText');
+  const fieldGroup=$('fieldGroup'),eText=$('eText');
+  const showE=$('showE'),showV=$('showV'),showF=$('showF');
+  const progress=$('progress'),play=$('play'),pause=$('pause'),reset=$('reset');
+  const speeds=[...document.querySelectorAll('.speed')];
+  const posLen=posTrack.getTotalLength(),negLen=negTrack.getTotalLength();
+  let value=0,speed=1,running=false,raf=null,last=0;
+  function pt(path,len,t){return path.getPointAtLength(len*t)}
+  function tangent(path,len,t){const e=.003,a=pt(path,len,Math.max(0,t-e)),b=pt(path,len,Math.min(1,t+e));const dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;return{x:dx/m,y:dy/m}}
+  function ang(v){return Math.atan2(v.y,v.x)*180/Math.PI}
+  function placeText(el,x,y){el.setAttribute('x',x);el.setAttribute('y',y)}
+  function render(){const t=value/1000;const pp=pt(posTrack,posLen,t),np=pt(negTrack,negLen,t);const pv=tangent(posTrack,posLen,t),nv=tangent(negTrack,negLen,t);posParticle.setAttribute('transform',`translate(${pp.x} ${pp.y})`);negParticle.setAttribute('transform',`translate(${np.x} ${np.y})`);posV.setAttribute('transform',`translate(${pp.x+6} ${pp.y-8}) rotate(${ang(pv)})`);negV.setAttribute('transform',`translate(${np.x+6} ${np.y-8}) rotate(${ang(nv)})`);placeText(posVText,pp.x+pv.x*108-pv.y*22+10,pp.y+pv.y*108+pv.x*22+10);placeText(negVText,np.x+nv.x*108-nv.y*22+10,np.y+nv.y*108+nv.x*22+10);posF.setAttribute('transform',`translate(${pp.x} ${pp.y}) rotate(180)`);negF.setAttribute('transform',`translate(${np.x} ${np.y}) rotate(0)`);placeText(posFText,pp.x-128,pp.y-18);placeText(negFText,np.x+112,np.y-18);const sv=showV.checked?'block':'none',sf=showF.checked?'block':'none',se=showE.checked?'block':'none';posV.style.display=sv;negV.style.display=sv;posVText.style.display=sv;negVText.style.display=sv;posF.style.display=sf;negF.style.display=sf;posFText.style.display=sf;negFText.style.display=sf;fieldGroup.style.display=se;eText.style.display=se;progress.value=String(value)}
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=null;last=0}
+  function tick(ts){if(!running)return;if(!last)last=ts;const dt=ts-last;last=ts;value+=dt*.12*speed;if(value>=1000){value=1000;render();stop();return}render();raf=requestAnimationFrame(tick)}
+  play.addEventListener('click',()=>{if(value>=1000)value=0;if(!running){running=true;last=0;raf=requestAnimationFrame(tick)}});pause.addEventListener('click',stop);reset.addEventListener('click',()=>{stop();value=0;render()});progress.addEventListener('input',()=>{stop();value=Number(progress.value);render()});speeds.forEach(btn=>btn.addEventListener('click',()=>{speed=Number(btn.dataset.speed)||1;speeds.forEach(b=>b.classList.toggle('active',b===btn))}));[showE,showV,showF].forEach(el=>el.addEventListener('change',render));render();
+})();
+</script>
+</body>
+</html>
