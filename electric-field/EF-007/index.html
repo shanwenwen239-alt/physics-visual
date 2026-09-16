@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q18 正点电荷场中的带电粒子运动｜课堂版</title>
+<style>
+:root{
+  --bg:#f6f8fc;--card:#fff;--border:#d9e3f0;--text:#152238;--muted:#667085;
+  --equip:#64748b;--track:#111827;--vel:#3456eb;--force:#e5484d;--center:#111827;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+h1{margin:0 0 6px;font-size:24px}
+h2{margin:0 0 12px;font-size:18px}
+.sub,.note{font-size:14px;color:var(--muted);line-height:1.75}
+svg{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}
+button.primary{background:#172033;color:#fff;border-color:#172033}
+button.active{border-color:#4f46e5;background:#eef2ff;color:#2739d7}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0}
+.info{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef1f5;font-size:14px}
+.info:last-child{border-bottom:none}
+.state{padding:12px 14px;border:1px solid var(--border);background:#f8fbff;border-radius:12px;font-size:14px;line-height:1.75}
+.range{margin-top:12px} input[type=range]{width:100%}
+.pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#334155;font-size:12px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="pill">Q18 · 正点电荷场中的粒子运动</div>
+      <h1>同心等势面 + 已知轨迹 → 判断电性、受力与能量变化</h1>
+      <div class="sub">
+        圆心 O 固定正点电荷，虚线同心圆表示等间距的等势面。粒子沿原题实线轨迹运动，
+        a、b、c 为轨迹与等势面的交点。
+      </div>
+
+      <svg id="svg" viewBox="0 0 800 520" aria-label="Q18 正点电荷场中的带电粒子运动">
+        <defs>
+          <marker id="vArrow" markerWidth="4.2" markerHeight="4.2" refX="4.0" refY="2.1" orient="auto">
+            <path d="M0,0 L4.2,2.1 L0,4.2 Z" fill="#3456eb"/>
+          </marker>
+          <marker id="fArrow" markerWidth="4.2" markerHeight="4.2" refX="4.0" refY="2.1" orient="auto">
+            <path d="M0,0 L4.2,2.1 L0,4.2 Z" fill="#e5484d"/>
+          </marker>
+          <filter id="halo" x="-50%" y="-50%" width="200%" height="200%">
+            <feMorphology operator="dilate" radius="3" in="SourceAlpha" result="thicken"/>
+            <feFlood flood-color="white" result="white"/>
+            <feComposite in="white" in2="thicken" operator="in" result="outline"/>
+            <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <g fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 7">
+          <circle cx="455" cy="275" r="58"/>
+          <circle cx="455" cy="275" r="95"/>
+          <circle cx="455" cy="275" r="132"/>
+          <circle cx="455" cy="275" r="169"/>
+        </g>
+
+        <circle cx="455" cy="275" r="17" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <text x="455" y="283" text-anchor="middle" font-size="28" font-weight="700" fill="#111827">+</text>
+        <text x="478" y="300" font-size="30" font-style="italic" fill="#111827">O</text>
+
+        <path id="track" d="M255 115 C315 170 335 225 368 242 C410 264 500 265 610 135"
+              fill="none" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+
+        <circle id="aDot" r="5.5" fill="#111827"></circle>
+        <circle id="bDot" r="5.5" fill="#111827"></circle>
+        <circle id="cDot" r="5.5" fill="#111827"></circle>
+        <text id="aLabel" font-size="30" font-style="italic" font-weight="700" fill="#111827" filter="url(#halo)">a</text>
+        <text id="bLabel" font-size="30" font-style="italic" font-weight="700" fill="#111827" filter="url(#halo)">b</text>
+        <text id="cLabel" font-size="30" font-style="italic" font-weight="700" fill="#111827" filter="url(#halo)">c</text>
+
+        <g id="particleGroup">
+          <circle r="14" fill="#6366f1" stroke="#fff" stroke-width="3.5"></circle>
+          <text x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">−</text>
+        </g>
+
+        <g id="vArrowGroup">
+          <line x1="0" y1="0" x2="120" y2="0" stroke="#3456eb" stroke-width="4" marker-end="url(#vArrow)" stroke-linecap="round"/>
+        </g>
+        <text id="vText" font-size="42" font-weight="400" fill="#3456eb" filter="url(#halo)">v</text>
+
+        <g id="fArrowGroup">
+          <line id="fLine" x1="0" y1="0" x2="110" y2="0" stroke="#e5484d" stroke-width="4" marker-end="url(#fArrow)" stroke-linecap="round"/>
+        </g>
+        <text id="fText" font-size="38" font-weight="400" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+
+        <line id="radiusLine" x1="455" y1="275" x2="455" y2="275" stroke="#94a3b8" stroke-width="2.6" stroke-dasharray="7 6"/>
+        <text id="rText" font-size="28" fill="#64748b" filter="url(#halo)">r</text>
+
+        <text x="22" y="492" font-size="17" fill="#64748b">灰虚线：等势面　黑实线：原题轨迹　蓝色：v　红色：Fₑ　灰虚线半径：r</text>
+      </svg>
+
+      <div class="controls">
+        <button class="primary" id="play">▶ 播放</button>
+        <button id="pause">Ⅱ 暂停</button>
+        <button id="reset">↺ 重置</button>
+        <button class="speed" data-speed="0.5">0.5×</button>
+        <button class="speed active" data-speed="1">1×</button>
+        <button class="speed" data-speed="2">2×</button>
+      </div>
+
+      <div class="range">
+        <div class="sub" style="margin-bottom:4px">轨迹进度</div>
+        <input id="progress" type="range" min="0" max="1000" value="0">
+      </div>
+    </section>
+
+    <aside>
+      <div class="card" style="margin-bottom:18px">
+        <h2>原题已知</h2>
+        <div class="info"><span>中心电荷</span><strong>正电</strong></div>
+        <div class="info"><span>等势面</span><strong>同心、等间距</strong></div>
+        <div class="info"><span>粒子轨迹</span><strong>已给定</strong></div>
+        <div class="info"><span>关键点</span><strong>a → b → c</strong></div>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>图层控制</h2>
+        <label class="chk"><input type="checkbox" id="showV" checked> 显示速度 v</label>
+        <label class="chk"><input type="checkbox" id="showF" checked> 显示电场力 Fₑ</label>
+        <label class="chk"><input type="checkbox" id="showR"> 显示到 O 的距离 r</label>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>课堂观察</h2>
+        <div class="state">
+          轨迹向 O 一侧弯曲，因此粒子受力总体指向 O。<br>
+          中心为正电荷，所以带电粒子应为<strong>负电荷</strong>。
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>推理提示</h2>
+        <div class="note">
+          ① 点电荷场中，离 O 越近，场强越大，受力越大。<br>
+          ② 对负电荷，电势能 U=qφ；越靠近正点电荷，U 越低。<br>
+          ③ 从较近的等势面向较远等势面移动时，电势能升高，动能降低。<br>
+          ④ 等间距同心圆并不代表相邻等势面电势差相等；靠近 O 的同样 Δr 对应更大的电势变化。
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $=id=>document.getElementById(id);
+  const track=$('track'),particleGroup=$('particleGroup');
+  const vArrowGroup=$('vArrowGroup'),vText=$('vText');
+  const fArrowGroup=$('fArrowGroup'),fText=$('fText'),fLine=$('fLine');
+  const radiusLine=$('radiusLine'),rText=$('rText');
+  const aDot=$('aDot'),bDot=$('bDot'),cDot=$('cDot'),aLabel=$('aLabel'),bLabel=$('bLabel'),cLabel=$('cLabel');
+  const progress=$('progress'),play=$('play'),pause=$('pause'),reset=$('reset');
+  const speeds=[...document.querySelectorAll('.speed')];
+  const showV=$('showV'),showF=$('showF'),showR=$('showR');
+
+  const total=track.getTotalLength();
+  const O={x:455,y:275};
+  let value=0,speed=1,running=false,raf=null,last=0;
+
+  function pointAt(t){return track.getPointAtLength(total*t)}
+  function tangentAt(t){
+    const e=.003,a=pointAt(Math.max(0,t-e)),b=pointAt(Math.min(1,t+e));
+    const dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;
+    return {x:dx/m,y:dy/m};
+  }
+  function towardO(p){
+    const dx=O.x-p.x,dy=O.y-p.y,m=Math.hypot(dx,dy)||1;
+    return {x:dx/m,y:dy/m,r:m};
+  }
+  function ang(v){return Math.atan2(v.y,v.x)*180/Math.PI}
+  function placeText(el,x,y){el.setAttribute('x',x);el.setAttribute('y',y)}
+
+  function placeABC(){
+    const pts={a:pointAt(.35),b:pointAt(.61),c:pointAt(.82)};
+    aDot.setAttribute('cx',pts.a.x);aDot.setAttribute('cy',pts.a.y);
+    bDot.setAttribute('cx',pts.b.x);bDot.setAttribute('cy',pts.b.y);
+    cDot.setAttribute('cx',pts.c.x);cDot.setAttribute('cy',pts.c.y);
+    aLabel.setAttribute('x',pts.a.x-26);aLabel.setAttribute('y',pts.a.y-12);
+    bLabel.setAttribute('x',pts.b.x+8);bLabel.setAttribute('y',pts.b.y-12);
+    cLabel.setAttribute('x',pts.c.x+10);cLabel.setAttribute('y',pts.c.y-8);
+  }
+
+  function render(){
+    const t=value/1000,p=pointAt(t),v=tangentAt(t),rad=towardO(p),F={x:rad.x,y:rad.y};
+
+    particleGroup.setAttribute('transform',`translate(${p.x} ${p.y})`);
+
+    vArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(v)})`);
+    fArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(F)})`);
+
+    placeText(vText,p.x+v.x*126-v.y*22+4,p.y+v.y*126+v.x*22+10);
+    placeText(fText,p.x+F.x*118+F.y*18-10,p.y+F.y*118-F.x*18+12);
+
+    const ref=145;
+    const factor=Math.min(1.35,Math.max(.65,(ref*ref)/(rad.r*rad.r)));
+    fLine.setAttribute('x2',110*factor);
+
+    radiusLine.setAttribute('x2',p.x);radiusLine.setAttribute('y2',p.y);
+    placeText(rText,(O.x+p.x)/2+8,(O.y+p.y)/2-8);
+
+    const sv=showV.checked?'block':'none',sf=showF.checked?'block':'none',sr=showR.checked?'block':'none';
+    vArrowGroup.style.display=sv;vText.style.display=sv;
+    fArrowGroup.style.display=sf;fText.style.display=sf;
+    radiusLine.style.display=sr;rText.style.display=sr;
+
+    progress.value=String(value);
+  }
+
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=null;last=0}
+  function tick(ts){
+    if(!running)return;
+    if(!last)last=ts;
+    const dt=ts-last;last=ts;
+    value+=dt*.12*speed;
+    if(value>=1000){value=1000;render();stop();return}
+    render();raf=requestAnimationFrame(tick);
+  }
+
+  play.addEventListener('click',()=>{if(value>=1000)value=0;if(!running){running=true;last=0;raf=requestAnimationFrame(tick)}});
+  pause.addEventListener('click',stop);
+  reset.addEventListener('click',()=>{stop();value=0;render()});
+  progress.addEventListener('input',()=>{stop();value=Number(progress.value);render()});
+  speeds.forEach(btn=>btn.addEventListener('click',()=>{speed=Number(btn.dataset.speed)||1;speeds.forEach(b=>b.classList.toggle('active',b===btn))}));
+  [showV,showF,showR].forEach(el=>el.addEventListener('change',render));
+
+  placeABC();render();
+})();
+</script>
+</body>
+</html>
