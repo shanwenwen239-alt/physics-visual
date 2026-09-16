@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q58 等势线、电场与电场力｜课堂版</title>
+<style>
+:root{
+  --bg:#f6f8fc;--card:#fff;--border:#d9e3f0;--text:#152238;--muted:#667085;
+  --equip:#1d9bf0;--track:#1f2937;--vel:#3456eb;--efield:#159447;--force:#e5484d;
+  --pos:#f59e0b;--neg:#6366f1;--unknown:#94a3b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1240px;margin:0 auto;padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+h1{margin:0 0 6px;font-size:24px}
+h2{margin:0 0 12px;font-size:18px}
+.sub{font-size:14px;color:var(--muted);line-height:1.7}
+.note{font-size:14px;color:var(--muted);line-height:1.8}
+svg{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}
+button.primary{background:#172033;color:#fff;border-color:#172033}
+button.active{border-color:#4f46e5;background:#eef2ff;color:#2739d7}
+button.pos.active{border-color:#f59e0b;background:#fff7e6;color:#9a5b00}
+button.neg.active{border-color:#6366f1;background:#eef2ff;color:#3730a3}
+.range{margin-top:12px}
+input[type=range]{width:100%}
+.info{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef1f5;font-size:14px}
+.info:last-child{border-bottom:none}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0}
+.pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#334155;font-size:12px}
+.state{margin-top:10px;padding:12px 14px;border:1px solid var(--border);background:#f8fbff;border-radius:12px;font-size:14px;line-height:1.7}
+.small{font-size:13px;color:var(--muted)}
+.sep{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 6px;color:#94a3b8}
+.key{display:inline-flex;align-items:center;gap:7px;margin-right:12px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="pill">Q58 · 课堂教学版</div>
+      <h1>等势线 → 电场 → 电场力</h1>
+      <div class="sub">
+        粒子始终沿题目给定轨迹 P→Q 运动。先由 7V→5V→3V 判断电场方向，再切换 q＞0 / q＜0 观察电场力方向。
+      </div>
+
+      <svg id="q58svg" viewBox="0 0 800 540" aria-label="Q58 等势线、电场与电场力">
+        <defs>
+          <marker id="arrowBlue" markerWidth="7" markerHeight="7" refX="6.4" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#3456eb"/>
+          </marker>
+          <marker id="arrowGreen" markerWidth="7" markerHeight="7" refX="6.4" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#159447"/>
+          </marker>
+          <marker id="arrowRed" markerWidth="7" markerHeight="7" refX="6.4" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#e5484d"/>
+          </marker>
+          <marker id="arrowGray" markerWidth="7" markerHeight="7" refX="6.4" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="#64748b"/>
+          </marker>
+          <filter id="halo" x="-50%" y="-50%" width="200%" height="200%">
+            <feMorphology operator="dilate" radius="2.0" in="SourceAlpha" result="thicken"/>
+            <feFlood flood-color="white" result="white"/>
+            <feComposite in="white" in2="thicken" operator="in" result="outline"/>
+            <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <g id="potentialGuide">
+          <rect x="250" y="15" width="320" height="54" rx="12" fill="#f8fafc" stroke="#d9e3f0"/>
+          <text x="272" y="49" font-size="19" font-weight="700" fill="#334155">低电势 3V</text>
+          <line x1="472" y1="41" x2="386" y2="41" stroke="#64748b" stroke-width="3.2" marker-end="url(#arrowGray)" stroke-linecap="round"/>
+          <text x="485" y="49" font-size="19" font-weight="700" fill="#334155">高电势 7V</text>
+        </g>
+
+        <path id="equipA" d="M120 205 C195 188 270 240 306 430" fill="none" stroke="#1d9bf0" stroke-width="4" stroke-dasharray="11 9" stroke-linecap="round"/>
+        <path id="equipB" d="M355 88 C420 126 446 245 430 430" fill="none" stroke="#1d9bf0" stroke-width="4" stroke-dasharray="11 9" stroke-linecap="round"/>
+        <path id="equipC" d="M530 82 C580 132 591 250 552 430" fill="none" stroke="#1d9bf0" stroke-width="4" stroke-dasharray="11 9" stroke-linecap="round"/>
+
+        <text x="88" y="169" font-size="34" font-weight="700" fill="#0f172a">A</text>
+        <text x="88" y="199" font-size="24" font-weight="700" fill="#075985">3V</text>
+        <text x="346" y="82" font-size="34" font-weight="700" fill="#0f172a">B</text>
+        <text x="346" y="110" font-size="24" font-weight="700" fill="#075985">5V</text>
+        <text x="525" y="78" font-size="34" font-weight="700" fill="#0f172a">C</text>
+        <text x="525" y="106" font-size="24" font-weight="700" fill="#075985">7V</text>
+
+        <path id="track" d="M162 202 C274 157 428 171 615 302" fill="none" stroke="#1f2937" stroke-width="5.5" stroke-linecap="round"/>
+
+        <circle id="pDot" r="5.5" fill="#111827"></circle>
+        <text id="pLabel" font-size="28" font-weight="700" fill="#111827" filter="url(#halo)">P</text>
+        <circle id="qDot" r="5.5" fill="#111827"></circle>
+        <text id="qLabel" font-size="28" font-weight="700" fill="#111827" filter="url(#halo)">Q</text>
+
+        <g id="fieldGroup"></g>
+
+        <g id="particleGroup">
+          <circle id="particleCircle" r="13" fill="#94a3b8" stroke="#fff" stroke-width="3.5"></circle>
+          <text id="particleSymbol" x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">?</text>
+        </g>
+
+        <g id="vArrowGroup">
+          <line x1="0" y1="0" x2="90" y2="0" stroke="#3456eb" stroke-width="4.5" marker-end="url(#arrowBlue)" stroke-linecap="round"/>
+        </g>
+        <text id="vText" x="0" y="0" font-size="25" font-weight="700" fill="#3456eb" filter="url(#halo)">v</text>
+
+        <g id="eArrowGroup">
+          <line x1="0" y1="0" x2="112" y2="0" stroke="#159447" stroke-width="4.5" marker-end="url(#arrowGreen)" stroke-linecap="round"/>
+        </g>
+        <text id="eText" x="0" y="0" font-size="25" font-weight="700" fill="#159447" filter="url(#halo)">E</text>
+
+        <g id="fArrowGroup">
+          <line x1="0" y1="0" x2="112" y2="0" stroke="#e5484d" stroke-width="4.8" marker-end="url(#arrowRed)" stroke-linecap="round"/>
+        </g>
+        <text id="fText" x="0" y="0" font-size="25" font-weight="700" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+
+        <text x="22" y="516" font-size="17" fill="#64748b">
+          蓝虚线：等势线　绿色：电场线/局部E　红色：电场力Fₑ　黑实线：题目给定轨迹
+        </text>
+      </svg>
+
+      <div class="controls">
+        <button class="primary" id="play">▶ 播放</button>
+        <button id="pause">Ⅱ 暂停</button>
+        <button id="reset">↺ 重置</button>
+        <button class="speed" data-speed="0.5">0.5×</button>
+        <button class="speed active" data-speed="1">1×</button>
+        <button class="speed" data-speed="2">2×</button>
+
+        <span class="sep">|</span>
+
+        <button id="assumePos" class="pos">q ＞ 0（正电）</button>
+        <button id="assumeNeg" class="neg">q ＜ 0（负电）</button>
+        <button id="clearAssume">未知电性</button>
+      </div>
+
+      <div class="range">
+        <div class="sub" style="margin-bottom:4px">轨迹进度</div>
+        <input id="progress" type="range" min="0" max="1000" value="0">
+      </div>
+    </section>
+
+    <aside>
+      <div class="card" style="margin-bottom:18px">
+        <h2>图层控制</h2>
+        <label class="chk"><input type="checkbox" id="showV" checked> 显示速度 v</label>
+        <label class="chk"><input type="checkbox" id="showE" checked> 显示局部电场 E</label>
+        <label class="chk"><input type="checkbox" id="showFieldLines" checked> 显示电场线</label>
+        <label class="chk"><input type="checkbox" id="showF" checked> 显示电场力 Fₑ</label>
+        <div class="small">E、Fₑ 的字母始终正向；Fₑ 的箭尾严格落在电荷中心。</div>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>当前假设</h2>
+        <div id="chargeState" class="state">
+          电性未知：可以确定 E，但不能唯一确定 Fₑ 方向。
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>正负电荷区分</h2>
+        <div class="note">
+          <span class="key"><span class="dot" style="background:#f59e0b"></span><strong>正电荷 +</strong></span>
+          <span class="key"><span class="dot" style="background:#6366f1"></span><strong>负电荷 −</strong></span>
+          <br><br>
+          q＞0：Fₑ 与 E 同向。<br>
+          q＜0：Fₑ 与 E 反向。
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>课堂推理</h2>
+        <div class="note">
+          ① 先看等势线：C=7V，B=5V，A=3V。<br>
+          ② 电场 E 垂直等势线，并由高电势指向低电势。<br>
+          ③ 再分别假设正电/负电，观察 Fₑ 的方向。<br>
+          ④ 原题轨迹始终不变，它是用来反推电性的“证据”。
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const track = document.getElementById('track');
+  const equipA = document.getElementById('equipA');
+  const equipB = document.getElementById('equipB');
+  const equipC = document.getElementById('equipC');
+
+  const particleGroup = document.getElementById('particleGroup');
+  const particleCircle = document.getElementById('particleCircle');
+  const particleSymbol = document.getElementById('particleSymbol');
+
+  const vArrowGroup = document.getElementById('vArrowGroup');
+  const vText = document.getElementById('vText');
+  const eArrowGroup = document.getElementById('eArrowGroup');
+  const eText = document.getElementById('eText');
+  const fArrowGroup = document.getElementById('fArrowGroup');
+  const fText = document.getElementById('fText');
+
+  const pDot = document.getElementById('pDot');
+  const qDot = document.getElementById('qDot');
+  const pLabel = document.getElementById('pLabel');
+  const qLabel = document.getElementById('qLabel');
+  const fieldGroup = document.getElementById('fieldGroup');
+
+  const progress = document.getElementById('progress');
+  const play = document.getElementById('play');
+  const pause = document.getElementById('pause');
+  const reset = document.getElementById('reset');
+  const speeds = [...document.querySelectorAll('.speed')];
+
+  const showV = document.getElementById('showV');
+  const showE = document.getElementById('showE');
+  const showF = document.getElementById('showF');
+  const showFieldLines = document.getElementById('showFieldLines');
+
+  const assumePos = document.getElementById('assumePos');
+  const assumeNeg = document.getElementById('assumeNeg');
+  const clearAssume = document.getElementById('clearAssume');
+  const chargeState = document.getElementById('chargeState');
+
+  const total = track.getTotalLength();
+  const startLen = total * 0.08;
+  const endLen = total * 0.94;
+  const travelLen = endLen - startLen;
+
+  let value = 0, speed = 1, running = false, raf = null, last = 0;
+  let chargeSign = 0;
+
+  function pt(path, t){ return path.getPointAtLength(path.getTotalLength() * t); }
+  function pointAt(t){ return track.getPointAtLength(startLen + travelLen * t); }
+  function tangent(path, t){
+    const e=.0025;
+    const a=pt(path,Math.max(0,t-e)), b=pt(path,Math.min(1,t+e));
+    return {x:b.x-a.x,y:b.y-a.y};
+  }
+  function tangentTrack(t){
+    const e=.003;
+    const a=pointAt(Math.max(0,t-e)), b=pointAt(Math.min(1,t+e));
+    return {x:b.x-a.x,y:b.y-a.y};
+  }
+  function norm(v){
+    const m=Math.hypot(v.x,v.y)||1;
+    return {x:v.x/m,y:v.y/m};
+  }
+  function ang(v){ return Math.atan2(v.y,v.x)*180/Math.PI; }
+
+  function fieldDirectionAtCurrent(){
+    const p=pointAt(value/1000);
+    const candidates=[equipA,equipB,equipC];
+    let best=null;
+    for(const path of candidates){
+      for(let s=0;s<=1.0001;s+=0.015){
+        const q=pt(path,s), dx=p.x-q.x, dy=p.y-q.y, d2=dx*dx+dy*dy;
+        if(!best||d2<best.d2) best={path,s,d2};
+      }
+    }
+    const t=norm(tangent(best.path,best.s));
+    const n1={x:-t.y,y:t.x}, n2={x:t.y,y:-t.x};
+    return norm(n1.x<n2.x?n1:n2);
+  }
+
+  function buildFieldLines(){
+    fieldGroup.innerHTML='';
+    const ys=[118,170,224,280,338,392];
+    ys.forEach((y,i)=>{
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+      const bend=(i-2.5)*15;
+      path.setAttribute('d',`M 720 ${y} C 620 ${y+bend*.15}, 470 ${y+bend*.6}, 235 ${y+bend}`);
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke','#159447');
+      path.setAttribute('stroke-width','2.8');
+      path.setAttribute('stroke-dasharray','9 7');
+      path.setAttribute('stroke-linecap','round');
+      path.setAttribute('marker-end','url(#arrowGreen)');
+      path.setAttribute('opacity','0.78');
+      fieldGroup.appendChild(path);
+    });
+  }
+
+  function placePQ(){
+    const p=pointAt(0), q=pointAt(1);
+    pDot.setAttribute('cx',p.x); pDot.setAttribute('cy',p.y);
+    qDot.setAttribute('cx',q.x); qDot.setAttribute('cy',q.y);
+    pLabel.setAttribute('x',p.x-34); pLabel.setAttribute('y',p.y+42);
+    qLabel.setAttribute('x',q.x+12); qLabel.setAttribute('y',q.y-8);
+  }
+
+  function updateChargeState(){
+    assumePos.classList.toggle('active',chargeSign===1);
+    assumeNeg.classList.toggle('active',chargeSign===-1);
+
+    if(chargeSign===1){
+      particleCircle.setAttribute('fill','#f59e0b');
+      particleSymbol.textContent='+';
+      chargeState.innerHTML='当前假设：<strong>正电荷 q＞0</strong>。因此 <strong>Fₑ 与 E 同向</strong>。';
+    }else if(chargeSign===-1){
+      particleCircle.setAttribute('fill','#6366f1');
+      particleSymbol.textContent='−';
+      chargeState.innerHTML='当前假设：<strong>负电荷 q＜0</strong>。因此 <strong>Fₑ 与 E 反向</strong>。';
+    }else{
+      particleCircle.setAttribute('fill','#94a3b8');
+      particleSymbol.textContent='?';
+      chargeState.innerHTML='电性未知：可以确定 <strong>E</strong>，但不能唯一确定 <strong>Fₑ</strong> 方向。';
+    }
+  }
+
+  function placeUprightText(el,x,y,text){
+    el.setAttribute('x',x);
+    el.setAttribute('y',y);
+    el.textContent=text;
+  }
+
+  function render(){
+    const t=value/1000;
+    const p=pointAt(t);
+    const vDir=norm(tangentTrack(t));
+    const eDir=fieldDirectionAtCurrent();
+    const fDir=chargeSign===0?null:{x:eDir.x*chargeSign,y:eDir.y*chargeSign};
+
+    particleGroup.setAttribute('transform',`translate(${p.x} ${p.y})`);
+
+    vArrowGroup.setAttribute('transform',`translate(${p.x+8} ${p.y-8}) rotate(${ang(vDir)})`);
+    const vEnd={x:p.x+8+vDir.x*90,y:p.y-8+vDir.y*90};
+    placeUprightText(vText,vEnd.x+9,vEnd.y-7,'v');
+
+    const eOrigin={x:p.x-4,y:p.y-34};
+    eArrowGroup.setAttribute('transform',`translate(${eOrigin.x} ${eOrigin.y}) rotate(${ang(eDir)})`);
+    const eEnd={x:eOrigin.x+eDir.x*112,y:eOrigin.y+eDir.y*112};
+    placeUprightText(eText,eEnd.x-8,eEnd.y-9,'E');
+
+    if(fDir){
+      fArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(fDir)})`);
+      const fEnd={x:p.x+fDir.x*112,y:p.y+fDir.y*112};
+      placeUprightText(fText,fEnd.x-12,fEnd.y+26,'Fₑ');
+    }
+
+    vArrowGroup.style.display=showV.checked?'block':'none';
+    vText.style.display=showV.checked?'block':'none';
+    eArrowGroup.style.display=showE.checked?'block':'none';
+    eText.style.display=showE.checked?'block':'none';
+    fieldGroup.style.display=showFieldLines.checked?'block':'none';
+
+    const forceVisible=showF.checked&&chargeSign!==0;
+    fArrowGroup.style.display=forceVisible?'block':'none';
+    fText.style.display=forceVisible?'block':'none';
+
+    progress.value=String(value);
+  }
+
+  function stop(){
+    running=false;
+    if(raf) cancelAnimationFrame(raf);
+    raf=null; last=0;
+  }
+  function tick(ts){
+    if(!running)return;
+    if(!last)last=ts;
+    const dt=ts-last; last=ts;
+    value+=dt*.12*speed;
+    if(value>=1000){value=1000;render();stop();return;}
+    render(); raf=requestAnimationFrame(tick);
+  }
+
+  play.addEventListener('click',()=>{
+    if(value>=1000)value=0;
+    if(!running){running=true;last=0;raf=requestAnimationFrame(tick);}
+  });
+  pause.addEventListener('click',stop);
+  reset.addEventListener('click',()=>{stop();value=0;render();});
+  progress.addEventListener('input',()=>{stop();value=Number(progress.value);render();});
+
+  speeds.forEach(btn=>btn.addEventListener('click',()=>{
+    speed=Number(btn.dataset.speed)||1;
+    speeds.forEach(b=>b.classList.toggle('active',b===btn));
+  }));
+
+  [showV,showE,showF,showFieldLines].forEach(el=>el.addEventListener('change',render));
+
+  assumePos.addEventListener('click',()=>{chargeSign=1;updateChargeState();render();});
+  assumeNeg.addEventListener('click',()=>{chargeSign=-1;updateChargeState();render();});
+  clearAssume.addEventListener('click',()=>{chargeSign=0;updateChargeState();render();});
+
+  buildFieldLines();
+  placePQ();
+  updateChargeState();
+  render();
+})();
+</script>
+</body>
+</html>
