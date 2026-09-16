@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Q53 电场线与带电粒子运动｜课堂版</title>
+<style>
+:root{
+  --bg:#f6f8fc;--card:#fff;--border:#d9e3f0;--text:#152238;--muted:#667085;
+  --field:#111827;--track:#16a3d6;--vel:#3456eb;--force:#e5484d;
+  --pos:#f59e0b;--neg:#6366f1;--unknown:#94a3b8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+h1{margin:0 0 6px;font-size:24px}
+h2{margin:0 0 12px;font-size:18px}
+.sub,.note{font-size:14px;color:var(--muted);line-height:1.75}
+svg{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:14px;background:#fff}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}
+button.primary{background:#172033;color:#fff;border-color:#172033}
+button.active{border-color:#4f46e5;background:#eef2ff;color:#2739d7}
+button.pos.active{border-color:#f59e0b;background:#fff7e6;color:#9a5b00}
+button.neg.active{border-color:#6366f1;background:#eef2ff;color:#3730a3}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0}
+.info{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eef1f5;font-size:14px}
+.info:last-child{border-bottom:none}
+.state{padding:12px 14px;border:1px solid var(--border);background:#f8fbff;border-radius:12px;font-size:14px;line-height:1.7}
+.range{margin-top:12px} input[type=range]{width:100%}
+.sep{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 6px;color:#94a3b8}
+.pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#334155;font-size:12px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="pill">Q53 · 反推型课堂版</div>
+      <h1>电场线 + 已知轨迹 → 反推电性与能量变化</h1>
+      <div class="sub">粒子沿题目给定虚线轨迹先经过 N，再经过 M。电场线方向已由原题箭头给出；电荷正负作为候选假设切换。</div>
+
+      <svg id="svg" viewBox="0 0 800 500" aria-label="Q53 电场线与粒子运动">
+        <defs>
+          <marker id="fieldArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#111827"/></marker>
+          <marker id="vArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#3456eb"/></marker>
+          <marker id="fArrow" markerWidth="4.5" markerHeight="4.5" refX="4.2" refY="2.25" orient="auto"><path d="M0,0 L4.5,2.25 L0,4.5 Z" fill="#e5484d"/></marker>
+          <filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feMorphology operator="dilate" radius="3" in="SourceAlpha" result="thicken"/><feFlood flood-color="white" result="white"/><feComposite in="white" in2="thicken" operator="in" result="outline"/><feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M250 90 C248 165 220 225 165 280" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+        <path d="M360 78 C345 165 300 238 230 300" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+        <path d="M470 72 C445 170 385 255 300 322" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+        <path d="M585 86 C545 190 465 278 370 342" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+        <path d="M700 102 C650 212 555 305 445 360" fill="none" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+        <line x1="245" y1="190" x2="215" y2="230" stroke="#111827" stroke-width="4" marker-end="url(#fieldArrow)" stroke-linecap="round"/>
+        <line x1="344" y1="195" x2="310" y2="238" stroke="#111827" stroke-width="4" marker-end="url(#fieldArrow)" stroke-linecap="round"/>
+        <line x1="445" y1="210" x2="405" y2="252" stroke="#111827" stroke-width="4" marker-end="url(#fieldArrow)" stroke-linecap="round"/>
+        <line x1="550" y1="230" x2="505" y2="268" stroke="#111827" stroke-width="4" marker-end="url(#fieldArrow)" stroke-linecap="round"/>
+        <line x1="650" y1="252" x2="605" y2="286" stroke="#111827" stroke-width="4" marker-end="url(#fieldArrow)" stroke-linecap="round"/>
+        <path id="track" d="M185 276 C300 205 455 190 665 225" fill="none" stroke="#16a3d6" stroke-width="4.5" stroke-dasharray="10 8" stroke-linecap="round"/>
+        <circle id="nDot" r="5.5" fill="#111827"></circle><text id="nLabel" font-size="30" font-weight="700" fill="#111827" filter="url(#halo)">N</text>
+        <circle id="mDot" r="5.5" fill="#111827"></circle><text id="mLabel" font-size="30" font-weight="700" fill="#111827" filter="url(#halo)">M</text>
+        <g id="particleGroup"><circle id="particleCircle" r="13" fill="#94a3b8" stroke="#fff" stroke-width="3.5"></circle><text id="particleSymbol" x="0" y="7" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">?</text></g>
+        <g id="vArrowGroup"><line x1="0" y1="0" x2="144" y2="0" stroke="#3456eb" stroke-width="4" marker-end="url(#vArrow)" stroke-linecap="round"/></g><text id="vText" font-size="48" font-weight="400" fill="#3456eb" filter="url(#halo)">v</text>
+        <g id="fArrowGroup"><line x1="0" y1="0" x2="156" y2="0" stroke="#e5484d" stroke-width="4.2" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fText" font-size="48" font-weight="400" fill="#e5484d" filter="url(#halo)">Fₑ</text>
+        <g id="fpArrowGroup"><line x1="0" y1="0" x2="124" y2="0" stroke="#f59e0b" stroke-width="3.4" stroke-dasharray="8 6" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fpText" font-size="30" font-weight="900" fill="#f59e0b" filter="url(#halo)">F∥</text>
+        <g id="fnArrowGroup"><line x1="0" y1="0" x2="112" y2="0" stroke="#16a34a" stroke-width="3.4" stroke-dasharray="8 6" marker-end="url(#fArrow)" stroke-linecap="round"/></g><text id="fnText" font-size="30" font-weight="900" fill="#16a34a" filter="url(#halo)">F⊥</text>
+        <text x="22" y="470" font-size="17" fill="#64748b">黑实线：电场线　蓝虚线：题目给定轨迹　蓝箭头：v　红箭头：Fₑ　橙虚线：F∥　绿虚线：F⊥</text>
+      </svg>
+
+      <div class="controls"><button class="primary" id="play">▶ 播放</button><button id="pause">Ⅱ 暂停</button><button id="reset">↺ 重置</button><button class="speed" data-speed="0.5">0.5×</button><button class="speed active" data-speed="1">1×</button><button class="speed" data-speed="2">2×</button><span class="sep">|</span><button id="assumePos" class="pos">q ＞ 0（正电）</button><button id="assumeNeg" class="neg">q ＜ 0（负电）</button><button id="clearAssume">未知电性</button></div>
+      <div class="range"><div class="sub" style="margin-bottom:4px">轨迹进度</div><input id="progress" type="range" min="0" max="1000" value="0"></div>
+    </section>
+
+    <aside>
+      <div class="card" style="margin-bottom:18px"><h2>原题已知</h2><div class="info"><span>电场线</span><strong>方向已给</strong></div><div class="info"><span>轨迹</span><strong>N → M</strong></div><div class="info"><span>重力</span><strong>不计</strong></div><div class="info"><span>电性</span><strong>未知</strong></div></div>
+      <div class="card" style="margin-bottom:18px"><h2>图层控制</h2><label class="chk"><input type="checkbox" id="showV" checked> 显示速度 v</label><label class="chk"><input type="checkbox" id="showF" checked> 显示电场力 Fₑ</label><label class="chk"><input type="checkbox" id="showDecomp"> 显示力分解 F∥ / F⊥</label></div>
+      <div class="card" style="margin-bottom:18px"><h2>当前假设</h2><div id="chargeState" class="state">电性未知：电场方向已知，但 Fₑ 方向要由电荷正负决定。</div></div>
+      <div class="card"><h2>课堂推理</h2><div class="note">① 原题电场线箭头已经给出 E 的方向。<br>② 假设 q＞0：Fₑ 与 E 同向。<br>③ 假设 q＜0：Fₑ 与 E 反向。<br>④ 比较 Fₑ 与原题轨迹弯曲趋势，判断哪种假设更相容。<br>⑤ 需要时再勾选“显示力分解”，观察 F∥ 改变速率、F⊥ 改变方向。<br>⑥ 再分析 N/M 的电势、场强、动能与电势能关系。</div></div>
+    </aside>
+  </div>
+</div>
+<script>
+(() => {
+  const track=document.getElementById('track'),particleGroup=document.getElementById('particleGroup'),particleCircle=document.getElementById('particleCircle'),particleSymbol=document.getElementById('particleSymbol'),vArrowGroup=document.getElementById('vArrowGroup'),vText=document.getElementById('vText'),fArrowGroup=document.getElementById('fArrowGroup'),fText=document.getElementById('fText'),fpArrowGroup=document.getElementById('fpArrowGroup'),fpText=document.getElementById('fpText'),fnArrowGroup=document.getElementById('fnArrowGroup'),fnText=document.getElementById('fnText'),nDot=document.getElementById('nDot'),mDot=document.getElementById('mDot'),nLabel=document.getElementById('nLabel'),mLabel=document.getElementById('mLabel'),progress=document.getElementById('progress'),play=document.getElementById('play'),pause=document.getElementById('pause'),reset=document.getElementById('reset'),speeds=[...document.querySelectorAll('.speed')],assumePos=document.getElementById('assumePos'),assumeNeg=document.getElementById('assumeNeg'),clearAssume=document.getElementById('clearAssume'),chargeState=document.getElementById('chargeState'),showV=document.getElementById('showV'),showF=document.getElementById('showF'),showDecomp=document.getElementById('showDecomp');
+  const total=track.getTotalLength(),startLen=total*.10,endLen=total*.92,travelLen=endLen-startLen;let value=0,speed=1,running=false,raf=null,last=0,chargeSign=0;
+  function pointAt(t){return track.getPointAtLength(startLen+travelLen*t)}
+  function tangentAt(t){const e=.003,a=pointAt(Math.max(0,t-e)),b=pointAt(Math.min(1,t+e)),dx=b.x-a.x,dy=b.y-a.y,m=Math.hypot(dx,dy)||1;return{x:dx/m,y:dy/m}}
+  function ang(v){return Math.atan2(v.y,v.x)*180/Math.PI}
+  function placeText(el,x,y,text){el.setAttribute('x',x);el.setAttribute('y',y);el.textContent=text}
+  function fieldDirAt(t){const p=pointAt(t),k=(p.x-185)/(665-185),dx=-.62+.08*k,dy=.78-.04*k,m=Math.hypot(dx,dy)||1;return{x:dx/m,y:dy/m}}
+  function placeNM(){const n=pointAt(.22),m=pointAt(.82);nDot.setAttribute('cx',n.x);nDot.setAttribute('cy',n.y);mDot.setAttribute('cx',m.x);mDot.setAttribute('cy',m.y);nLabel.setAttribute('x',n.x-18);nLabel.setAttribute('y',n.y-14);mLabel.setAttribute('x',m.x+12);mLabel.setAttribute('y',m.y-10)}
+  function updateCharge(){assumePos.classList.toggle('active',chargeSign===1);assumeNeg.classList.toggle('active',chargeSign===-1);if(chargeSign===1){particleCircle.setAttribute('fill','#f59e0b');particleSymbol.textContent='+';chargeState.innerHTML='当前假设：<strong>正电荷 q＞0</strong>，所以 <strong>Fₑ 与电场方向同向</strong>。'}else if(chargeSign===-1){particleCircle.setAttribute('fill','#6366f1');particleSymbol.textContent='−';chargeState.innerHTML='当前假设：<strong>负电荷 q＜0</strong>，所以 <strong>Fₑ 与电场方向反向</strong>。'}else{particleCircle.setAttribute('fill','#94a3b8');particleSymbol.textContent='?';chargeState.innerHTML='电性未知：电场方向已知，但 <strong>Fₑ</strong> 方向要由电荷正负决定。'}}
+  function render(){const t=value/1000,p=pointAt(t),v=tangentAt(t),E=fieldDirAt(t),F=chargeSign===0?null:{x:E.x*chargeSign,y:E.y*chargeSign};particleGroup.setAttribute('transform',`translate(${p.x} ${p.y})`);const vBaseX=p.x+6,vBaseY=p.y-8;vArrowGroup.setAttribute('transform',`translate(${vBaseX} ${vBaseY}) rotate(${ang(v)})`);placeText(vText,vBaseX+v.x*156-v.y*34+12,vBaseY+v.y*156+v.x*34+20,'v');const dot=F?(F.x*v.x+F.y*v.y):0,Fpar=F?{x:v.x*dot,y:v.y*dot}:null,Fperp=F?{x:F.x-Fpar.x,y:F.y-Fpar.y}:null;if(F){fArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(F)})`);placeText(fText,p.x+F.x*168+F.y*30-20,p.y+F.y*168-F.x*30+24,'Fₑ');if(Math.hypot(Fpar.x,Fpar.y)>.08){fpArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(Fpar)})`);placeText(fpText,p.x+Fpar.x*138-v.y*18-8,p.y+Fpar.y*138+v.x*18-10,'F∥')}if(Math.hypot(Fperp.x,Fperp.y)>.08){fnArrowGroup.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${ang(Fperp)})`);const n={x:-v.y,y:v.x},sign=(Fperp.x*n.x+Fperp.y*n.y)>=0?1:-1;placeText(fnText,p.x+Fperp.x*128+n.x*sign*18-10,p.y+Fperp.y*128+n.y*sign*18+4,'F⊥')}}vArrowGroup.style.display=showV.checked?'block':'none';vText.style.display=showV.checked?'block':'none';const sf=showF.checked&&chargeSign!==0;fArrowGroup.style.display=sf?'block':'none';fText.style.display=sf?'block':'none';const sd=sf&&showDecomp.checked;fpArrowGroup.style.display=sd?'block':'none';fpText.style.display=sd?'block':'none';fnArrowGroup.style.display=sd?'block':'none';fnText.style.display=sd?'block':'none';progress.value=String(value)}
+  function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=null;last=0}
+  function tick(ts){if(!running)return;if(!last)last=ts;const dt=ts-last;last=ts;value+=dt*.12*speed;if(value>=1000){value=1000;render();stop();return}render();raf=requestAnimationFrame(tick)}
+  play.addEventListener('click',()=>{if(value>=1000)value=0;if(!running){running=true;last=0;raf=requestAnimationFrame(tick)}});pause.addEventListener('click',stop);reset.addEventListener('click',()=>{stop();value=0;render()});progress.addEventListener('input',()=>{stop();value=Number(progress.value);render()});speeds.forEach(btn=>btn.addEventListener('click',()=>{speed=Number(btn.dataset.speed)||1;speeds.forEach(b=>b.classList.toggle('active',b===btn))}));assumePos.addEventListener('click',()=>{chargeSign=1;updateCharge();render()});assumeNeg.addEventListener('click',()=>{chargeSign=-1;updateCharge();render()});clearAssume.addEventListener('click',()=>{chargeSign=0;updateCharge();render()});showV.addEventListener('change',render);showF.addEventListener('change',render);showDecomp.addEventListener('change',render);placeNM();updateCharge();render();
+})();
+</script>
+</body>
+</html>
